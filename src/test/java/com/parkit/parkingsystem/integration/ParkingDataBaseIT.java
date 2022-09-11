@@ -85,4 +85,29 @@ public class ParkingDataBaseIT {
         Assertions.assertEquals( round((duration > (30.0 * 60.0 )) ? (((duration / (60.0 * 60.0 ))) * Fare.CAR_RATE_PER_HOUR) : 0),round(ticket.getPrice()));
     }
 
+    @Test
+    public void testParkingReccuringCar() {
+        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+        ticket = ticketDAO.getTicket("ABCDEF");
+        Assertions.assertFalse(ticketDAO.checkIfReccurent(ticket));
+        parkingService.processIncomingVehicle();
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            parkingService.processExitingVehicle();
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ticket = ticketDAO.getTicket("ABCDEF");
+        parkingService.processIncomingVehicle();
+        Assertions.assertTrue(ticketDAO.checkIfReccurent(ticket), "Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            parkingService.processExitingVehicle();
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
