@@ -2,6 +2,8 @@ package com.parkit.parkingsystem.model;
 
 import com.parkit.parkingsystem.constants.ParkingType;
 
+        // This class allows to define the different attributes of ParkingSpot
+
 public class ParkingSpot {
     private int number;
     private ParkingType parkingType;

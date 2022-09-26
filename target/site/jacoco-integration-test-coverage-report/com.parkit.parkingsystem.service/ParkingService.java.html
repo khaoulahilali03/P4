@@ -108,10 +108,10 @@ public class ParkingService {
 <span class="fc" id="L108">                ParkingSpot parkingSpot = ticket.getParkingSpot();</span>
 <span class="fc" id="L109">                parkingSpot.setAvailable(true);</span>
 <span class="fc" id="L110">                parkingSpotDAO.updateParking(parkingSpot);</span>
-<span class="pc bpc" id="L111" title="1 of 2 branches missed.">                if (ticketDAO.checkIfReccurent(ticket)== true){</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                if (ticketDAO.checkIfReccurent(ticket)== true){</span>
 <span class="fc" id="L112">                    System.out.println(&quot;Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount, please pay the parking fare:&quot; +ticket.getPrice()*0.95);</span>
                 }else {
-<span class="nc" id="L114">                    System.out.println(&quot;Please pay the parking fare:&quot; + ticket.getPrice());</span>
+<span class="fc" id="L114">                    System.out.println(&quot;Please pay the parking fare:&quot; + ticket.getPrice());</span>
                 }
 <span class="fc" id="L116">                System.out.println(&quot;Recorded out-time for vehicle number:&quot; + ticket.getVehicleRegNumber() + &quot; is:&quot; + outTime);</span>
 <span class="fc" id="L117">            }else{</span>

@@ -1,7 +1,8 @@
 package com.parkit.parkingsystem.model;
 
-import java.util.Calendar;
 import java.util.Date;
+
+        // This class allows to define the different attributes of Ticket
 
 public class Ticket {
     private int id;
@@ -9,7 +10,9 @@ public class Ticket {
     private String vehicleRegNumber;
     private double price;
     private Date inTime;
+
     private Date outTime;
+
 
     public int getId() {
         return id;
@@ -20,11 +23,18 @@ public class Ticket {
     }
 
     public ParkingSpot getParkingSpot() {
-        return parkingSpot;
+        if (parkingSpot == null){
+            return null;
+        }else{
+            ParkingSpot ps = new ParkingSpot(parkingSpot.getId(), parkingSpot.getParkingType(),parkingSpot.isAvailable());
+            return ps;
+        }
     }
 
     public void setParkingSpot(ParkingSpot parkingSpot) {
-        this.parkingSpot = parkingSpot;
+        if (parkingSpot != null){
+            this.parkingSpot = new ParkingSpot(parkingSpot.getId(), parkingSpot.getParkingType(),parkingSpot.isAvailable());
+        }
     }
 
     public String getVehicleRegNumber() {
@@ -44,18 +54,25 @@ public class Ticket {
     }
 
     public Date getInTime() {
-        return inTime;
+        return new Date(this.inTime.getTime());
     }
 
     public void setInTime(Date inTime) {
-        this.inTime = inTime;
+        this.inTime = new Date(inTime.getTime());
     }
 
     public Date getOutTime() {
-        return outTime;
+        if(outTime == null){
+            return null;
+        }
+        return new Date(this.outTime.getTime());
+
     }
 
     public void setOutTime(Date outTime) {
-        this.outTime = outTime;
+        if (outTime == null){
+            this.outTime = null;
+        }else
+        this.outTime = new Date(outTime.getTime());
     }
 }

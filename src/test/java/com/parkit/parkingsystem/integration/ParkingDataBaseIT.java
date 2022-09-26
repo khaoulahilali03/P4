@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.round;
@@ -28,7 +29,6 @@ public class ParkingDataBaseIT {
     private static ParkingSpotDAO parkingSpotDAO;
     private static TicketDAO ticketDAO;
     private Ticket ticket;
-    private ParkingSpot parkingSpot;
     private static DataBasePrepareService dataBasePrepareService;
 
     @Mock
@@ -56,19 +56,22 @@ public class ParkingDataBaseIT {
     }
 
     @Test
-    public void testParkingACar(){
+    public void testParkingACar() throws SQLException {
+        int previousSLot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
         //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
         ticket = ticketDAO.getTicket("ABCDEF");
         Assertions.assertNotNull(ticket);
-        parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
+        Assertions.assertFalse(ticket.getParkingSpot().isAvailable());
+
+        int newSLot = parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR);
         parkingService.processIncomingVehicle();
-        Assertions.assertNotEquals(parkingSpot, parkingSpotDAO);
+        Assertions.assertNotEquals(previousSLot, newSLot);
     }
 
     @Test
-    public void testParkingLotExit(){
+    public void testParkingLotExit() throws SQLException{
         testParkingACar();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         try {
@@ -86,7 +89,7 @@ public class ParkingDataBaseIT {
     }
 
     @Test
-    public void testParkingReccuringCar() {
+    public void testParkingReccuringCar() throws SQLException{
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         ticket = ticketDAO.getTicket("ABCDEF");
         Assertions.assertFalse(ticketDAO.checkIfReccurent(ticket));

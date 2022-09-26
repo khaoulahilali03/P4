@@ -5,6 +5,7 @@ import com.parkit.parkingsystem.model.Ticket;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
 
+        // This class calculate the price of the ticket depending on the duration and the type of vehicle
 public class FareCalculatorService {
 
     public void calculateFare(Ticket ticket){
